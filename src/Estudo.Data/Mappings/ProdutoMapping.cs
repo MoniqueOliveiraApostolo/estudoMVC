@@ -25,7 +25,9 @@ namespace Estudo.Data.Mappings
 
             builder.Property(p => p.Imagem)
                 .IsRequired()
-                .HasColumnType("varchar(100)");            
+                .HasColumnType("varchar(100)");
+
+
         }
     }
 }

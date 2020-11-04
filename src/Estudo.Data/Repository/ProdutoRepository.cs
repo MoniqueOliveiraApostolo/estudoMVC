@@ -35,5 +35,10 @@ namespace Estudo.Data.Repository
         {
             return await Find(p => p.FornecedorId == fornecedorId);
         }
+
+        public override Task Update(Produto obj)
+        {
+            return base.Update(obj);
+        }
     }
 }

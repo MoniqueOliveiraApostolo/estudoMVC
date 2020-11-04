@@ -70,7 +70,7 @@ namespace Estudo.App
 
             }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddScoped<MeuDbContext>();
+            services.AddTransient<MeuDbContext>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();

@@ -102,7 +102,7 @@ namespace Estudo.App.Controllers
 
             await _produtoRepository.Update(_mapper.Map<Produto>(produtoUpdate));
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(Guid id)
