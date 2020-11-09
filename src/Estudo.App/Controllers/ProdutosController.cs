@@ -8,6 +8,7 @@ using AutoMapper;
 using AppMvcBasica.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Security.AccessControl;
 
 namespace Estudo.App.Controllers
 {
@@ -15,14 +16,18 @@ namespace Estudo.App.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
         public ProdutosController(IProdutoRepository produtoRepository,
                                   IFornecedorRepository fornecedorRepository,
-                                  IMapper mapper)
+                                  IProdutoService produtoService,
+                                  IMapper mapper,
+                                  INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
+            _produtoService = produtoService;
             _mapper = mapper;
         }
 
@@ -64,7 +69,9 @@ namespace Estudo.App.Controllers
             if(!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo)) return View(produtoViewModel);
 
             produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
-            await _produtoRepository.Insert(_mapper.Map<Produto>(produtoViewModel));
+            await _produtoService.Insert(_mapper.Map<Produto>(produtoViewModel));
+
+            if (!OperacaoValida()) return View(produtoViewModel);
 
             return RedirectToAction("Index");
         }
@@ -106,7 +113,9 @@ namespace Estudo.App.Controllers
             produtoUpdate.Valor = produtoViewModel.Valor;
             produtoUpdate.Ativo = produtoViewModel.Ativo;
 
-            await _produtoRepository.Update(_mapper.Map<Produto>(produtoUpdate));
+            await _produtoService.Update(_mapper.Map<Produto>(produtoUpdate));
+
+            if (!OperacaoValida()) return View(produtoViewModel);
 
             return RedirectToAction("Index");
         }
@@ -130,7 +139,11 @@ namespace Estudo.App.Controllers
 
             if (produto == null) return NotFound();
 
-            await _produtoRepository.Delete(id);
+            await _produtoService.Delete(id);
+
+            if (!OperacaoValida()) return View(produto);
+
+            TempData["Sucesso"] = "Produto excluído com sucesso!";
 
             return RedirectToAction(nameof(Index));
         }

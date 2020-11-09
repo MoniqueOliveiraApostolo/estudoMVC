@@ -1,5 +1,7 @@
 ﻿using Estudo.App.Extensions;
 using Estudo.Business.Interfaces;
+using Estudo.Business.Notifications;
+using Estudo.Business.Services;
 using Estudo.Data.Context;
 using Estudo.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -16,6 +18,10 @@ namespace Estudo.App.Configurations
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
+
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
 
             return services;
         }
