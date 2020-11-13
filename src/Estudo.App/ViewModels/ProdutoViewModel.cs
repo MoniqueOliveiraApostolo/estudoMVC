@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +28,8 @@ namespace Estudo.App.ViewModels
         [StringLength(1000, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres.", MinimumLength = 2)]
         public string Descricao { get; set; }
 
-        [DisplayName("Imagem do Produto")]
+        [NotMapped]
+        [DisplayName("Imagem do Produto")]        
         public IFormFile ImagemUpload { get; set; }
 
         public string Imagem { get; set; }
@@ -41,7 +43,9 @@ namespace Estudo.App.ViewModels
 
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
+
         public FornecedorViewModel Fornecedor { get; set; }
+
         public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
     }
 }
